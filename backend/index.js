@@ -8,8 +8,8 @@ const DATABASE =
   "mongodb+srv://sample:sample1234@cluster0.drlfj.mongodb.net/sample?retryWrites=true&w=majority";
 
 mongoose
-  // .connect("mongodb://localhost:27017/sample")
-  .connect(DATABASE)
+  .connect("mongodb://localhost:27017/sample")
+  // .connect(DATABASE)
   .then(() => app.listen(8000, () => console.log("Running on port 8000")))
   .catch((e) => console.log(e.message));
 
