@@ -1,14 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import Sample from "./Sample"
+import React from "react";
+import ReactDOM from "react-dom";
+import Dashboard from "./Dashboard";
+import "../src/styles.css";
+
+import { BrowserRouter, Route } from "react-router-dom";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <Sample />
+    <BrowserRouter>
+      <Route path="/login" exact component={Login} />
+      <Route path="/register" exact component={Register} />
+      <Route path="/Dashboard" exact component={Dashboard} />
+    </BrowserRouter>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
