@@ -55,11 +55,20 @@ app.delete("/api/data/:id", (req, res) => {
 });
 
 // PUT
-app.put("/api/data/:name", (req, res) => {
+app.put("/api/data/:id", (req, res) => {
   user
-    .updateOne({ name: req.params.name }, { $set: { name: "asus" } })
-    .then((data) => {
-      res.send(data);
+    .updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          name: req.body.name,
+          age: req.body.age,
+          address: req.body.address,
+        },
+      }
+    )
+    .then(() => {
+      res.json({ status: "OK", code: 200 });
     })
     .catch((err) => {
       res.send(err.message);

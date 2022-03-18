@@ -26,7 +26,25 @@ export default function Dashboard() {
   const [error, setError] = useState(false);
 
   //FOR EDIT FORM
-  const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(false);
+  const [theList, setTheList] = useState();
+
+  const [forName, setForName] = useState("");
+  const [forAge, setForAge] = useState();
+  const [forZone, setForZone] = useState();
+  const [forStreet, setForStreet] = useState("");
+
+  const openModal = (lista) => {
+    setModal(true);
+    setTheList(lista);
+    setForName(lista.name);
+    setForAge(lista.age);
+    setForZone(lista.address.zone);
+    setForStreet(lista.address.street);
+  };
+  const closeModal = () => {
+    setModal(false);
+  };
 
   // GET
   useEffect(() => {
@@ -71,15 +89,25 @@ export default function Dashboard() {
   };
 
   // UPDATE
-  function update(lista) {
-    // fetch("http://localhost:8000/api/data/" + lista.name, {
-    //   method: "PUT",
-    // })
-    //   .then(() => console.log("update"))
-    //   .catch((e) => console.log(e));
-
-    alert(lista._id)
-  }
+  const updateMe = (lista) => {
+    fetch("http://localhost:8000/api/data/" + lista._id, {
+      method: "PUT",
+      body: JSON.stringify({
+        name: forName,
+        age: forAge,
+        address: {
+          zone: forZone,
+          street: forStreet,
+        },
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((e) => console.log(e));
+  };
 
   return (
     <div className="container">
@@ -97,25 +125,31 @@ export default function Dashboard() {
         // DATA
         list.map((lista, index) => {
           return (
-
-            <div key={index} className="list" onClick={() => {
-              update(lista)
-            }}>
-              <li>{lista.name}</li>
+            <div key={index} className="list">
+              <li onClick={() => openModal(lista)}>{lista.name}</li>
               <button onClick={() => del(lista)}>delete</button>
             </div>
-
           );
         })
       )}
 
-      {/*  MODAL  */}
-      {/*{modal && <div className="modal">*/}
-      {/*  <h1>Edit: {}</h1>*/}
-      {/*  <button onClick={() => setModal(false)}>close</button>*/}
-      {/*  <h1 >hello</h1>*/}
-      {/*</div> }*/}
-
+      {/* MODAL  */}
+      {modal && (
+        <div className="modal">
+          <h1>Edit: {theList.name}</h1>
+          <button onClick={closeModal}>close</button>
+          {/* FORM FOR UPDATE */}
+          <label>name:</label>
+          <input value={forName} onChange={(e) => setForName(e.target.value)} />
+          <input value={forAge} onChange={(e) => setForAge(e.target.value)} />
+          <input value={forZone} onChange={(e) => setForZone(e.target.value)} />
+          <input
+            value={forStreet}
+            onChange={(e) => setForStreet(e.target.value)}
+          />
+          <button onClick={() => updateMe(theList)}>update</button>
+        </div>
+      )}
     </div>
   );
 }
