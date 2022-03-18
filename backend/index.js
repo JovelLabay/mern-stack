@@ -23,8 +23,6 @@ app.use(bodyParse.json());
 app.get("/api/data", (req, res) => {
   user
     .find()
-    .then((data) => {
-      res.send(data);
     })
     .catch((err) => {
       res.send(err.message);
@@ -79,23 +77,24 @@ app.put("/api/data/:id", (req, res) => {
 // REGISTER
 app.post("/api/register", async (req, res) => {
   try {
-    // const hashPass = await bcrypt.hash(req.body.password, 10);
+    const hasPass = btoa(req.body.password);
+    console.log(hasPass);
     await auto.create({
       email: req.body.email,
-      password: req.body.password,
-      // password: hashPass,
+      password: hasPass,
     });
-    res.json({ status: "okay" });
-  } catch (error) {
-    res.json({ status: "error", message: "duplication", error: error });
+    res.json({ info: "Account Successfull" });
+  } catch (e) {
+    res.json({ info: e.message });
   }
 });
 
 // LOGIN
 app.post("/api/login", async (req, res) => {
+  const unHashPass = btoa(req.body.password);
   const authentication = await auto.findOne({
     email: req.body.email,
-    password: req.body.password,
+    password: unHashPass,
   });
 
   if (authentication) {

@@ -12,8 +12,8 @@ const userSchema = new mongoose.Schema({
 
 // AUTH
 const autoSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  email: { type: String, lowercase: true, required: true },
+  password: { type: String, minlength: 4, maxlength: 100, required: true },
 });
 
 const user = mongoose.model("input", userSchema);
