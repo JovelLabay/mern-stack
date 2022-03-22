@@ -21,6 +21,7 @@ export default function Dashboard() {
     setZone,
     street,
     setStreet,
+    setList,
   };
 
   const [error, setError] = useState(false);
@@ -150,6 +151,30 @@ export default function Dashboard() {
           <button onClick={() => updateMe(theList)}>update</button>
         </div>
       )}
+
+      {/* TABLE */}
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Zone</th>
+            <th>Street</th>
+          </tr>
+        </thead>
+        <tbody>
+          {list.map((item, index) => {
+            return (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>{item.age}</td>
+                <td>{item.address.zone}</td>
+                <td>{item.address.street}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const bodyParse = require("body-parser");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 
 // SCHEMA
 const { user, auto } = require("./schema.config");
@@ -20,13 +19,40 @@ app.use(cors());
 app.use(bodyParse.json());
 
 // GET
-app.get("/api/data", (req, res) => {
+app.get("/api/data/", (req, res) => {
   user
     .find()
+    // FULL DATA TO BE RETURNED
+    .then((data) => {
+      res.send(data);
     })
+
+    // LIMITATION OF DATA TO BE RETURNED
+    // .then((data) => {
+    //   res.send(
+    //     data.map((d) => {
+    //       return { name: d.name, id: d._id };
+    //     })
+    //   );
+    // })
     .catch((err) => {
       res.send(err.message);
     });
+});
+
+// GET SPECIFIC ID
+app.get("/api/data/:id", async (req, res) => {
+  try {
+    const resData = await user.findOne({
+      _id: req.params.id,
+    });
+    const data = resData;
+    res.json(data);
+  } catch (error) {
+    res
+      .status(404)
+      .json({ message: error.message, id: req.params.id + " does not exist" });
+  }
 });
 
 // POST
@@ -78,7 +104,6 @@ app.put("/api/data/:id", (req, res) => {
 app.post("/api/register", async (req, res) => {
   try {
     const hasPass = btoa(req.body.password);
-    console.log(hasPass);
     await auto.create({
       email: req.body.email,
       password: hasPass,

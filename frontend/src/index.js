@@ -7,6 +7,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Query from "./pages/Query";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,6 +15,7 @@ ReactDOM.render(
       <Route path="/login" exact component={Login} />
       <Route path="/register" exact component={Register} />
       <Route path="/Dashboard" exact component={Dashboard} />
+      <Route path="/query" exact component={Query} />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

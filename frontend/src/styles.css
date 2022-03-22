@@ -3,6 +3,7 @@
   margin: 0;
   background-color: black;
   color: white;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .container {
@@ -37,8 +38,7 @@
   justify-content: space-between;
 }
 
-
-.modal{
+.modal {
   position: absolute;
   top: 0;
   left: 0;
@@ -46,4 +46,31 @@
   width: 100vw;
   background-color: green;
   z-index: 1;
+}
+
+/* REACT QUERY FOR PAGINATION */
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 2rem 7rem;
+}
+
+.btn {
+  background-color: none;
+  border: 2px solid white;
+  border-radius: 10px;
+  width: 5rem;
+  height: 2rem;
+}
+
+.center {
+  background-color: white;
+  width: 2rem;
+  height: 2rem;
+  color: black;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -2,7 +2,6 @@ import React from "react";
 
 export default function Form(props) {
   const { name, age, zone, street } = props;
-
   // POST
   const post = (e) => {
     e.preventDefault();
@@ -25,7 +24,19 @@ export default function Form(props) {
         "Content-type": "application/json; charset=UTF-8",
       },
     })
-      .then(() => console.log("okay"))
+      .then(() => {
+        console.log("okay");
+        props.setList((prev) => {
+          return [
+            ...prev,
+            {
+              name: name,
+              age: age,
+              address: { zone: zone, street: street },
+            },
+          ];
+        });
+      })
       .catch((err) => {
         throw err.message;
       });
