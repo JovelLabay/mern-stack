@@ -13,7 +13,12 @@ const userSchema = new mongoose.Schema({
 // AUTH
 const autoSchema = new mongoose.Schema({
   email: { type: String, lowercase: true, required: true },
-  password: { type: String, minlength: 8, maxlength: 16, required: true },
+  password: {
+    type: String,
+    minlength: [8, "Requires at lease 8 characters."],
+    maxlength: 16,
+    required: true,
+  },
 });
 
 const user = mongoose.model("input", userSchema);

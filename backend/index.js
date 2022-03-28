@@ -110,7 +110,7 @@ app.post("/api/register", async (req, res) => {
     });
     res.json({ info: "Account Successfull" });
   } catch (e) {
-    res.json({ info: e.message });
+    res.json({ info: e });
   }
 });
 
