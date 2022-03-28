@@ -50,7 +50,7 @@ export default function Dashboard() {
   // GET
   useEffect(() => {
     // LOGIN AUTO
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (token) {
       // FETCH DATA ONLY IF LOGININ
       fetch("http://localhost:8000/api/data")
@@ -62,14 +62,14 @@ export default function Dashboard() {
           setError(true);
         });
     } else {
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       history.replace("/login");
     }
   }, []);
 
   // LOGOUT
   const logout = () => {
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     history.replace("/login");
   };
 

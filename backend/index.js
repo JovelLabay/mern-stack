@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const bodyParse = require("body-parser");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+const bcrypt = require("bcrypt");
 
 // SCHEMA
 const { user, auto } = require("./schema.config");
@@ -17,6 +19,7 @@ mongoose
 const app = express();
 app.use(cors());
 app.use(bodyParse.json());
+app.use(cookieParser());
 
 // GET
 app.get("/api/data/", (req, res) => {
@@ -101,37 +104,48 @@ app.put("/api/data/:id", (req, res) => {
 
 // === FOR AUTHENTICATION === //
 // REGISTER
+function errorInfo(e) {
+  return e.errors;
+}
+
 app.post("/api/register", async (req, res) => {
   try {
-    const hasPass = btoa(req.body.password);
     await auto.create({
       email: req.body.email,
-      password: hasPass,
+      password: req.body.password,
     });
     res.json({ info: "Account Successfull" });
   } catch (e) {
-    res.json({ info: e });
+    const lala = errorInfo(e);
+    res.send(lala);
   }
 });
 
 // LOGIN
 app.post("/api/login", async (req, res) => {
-  const unHashPass = btoa(req.body.password);
   const authentication = await auto.findOne({
     email: req.body.email,
-    password: unHashPass,
   });
 
   if (authentication) {
-    const token = jwt.sign(
-      {
-        email: req.body.email,
-        password: req.body.password,
-      },
-      "secret1234"
+    const unHashPass = await bcrypt.compare(
+      req.body.password,
+      authentication.password
     );
-    res.json({ status: "ok", userStatus: token });
+    if (unHashPass) {
+      const token = jwt.sign(
+        {
+          email: req.body.email,
+          password: req.body.password,
+        },
+        "secret1234"
+      );
+
+      res.json({ status: "ok", userStatus: token });
+    } else {
+      res.json({ status: "invalid" });
+    }
   } else {
-    res.json({ status: "invalid", userStatus: false });
+    res.json({ status: "invalid" });
   }
 });

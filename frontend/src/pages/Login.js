@@ -21,13 +21,13 @@ export default function Login() {
     });
 
     const data = await response.json();
-    const { userStatus } = data;
-    if (data.userStatus) {
-      localStorage.setItem("token", userStatus);
-      alert("loggedin");
+    const { status, userStatus } = data;
+    if (userStatus) {
+      sessionStorage.setItem("token", userStatus);
+      alert(status);
       window.location.href = "/dashboard";
     } else {
-      alert("invalid");
+      alert(status);
     }
   }
 
